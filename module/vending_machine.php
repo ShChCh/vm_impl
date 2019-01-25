@@ -101,8 +101,14 @@ class VendingMaching
     protected function response($status, $itemName, $change, $description){
     	if ($status == true)
     		return json_encode('{"status":"success", "change":' . $change .', "return item":"' . $itemName . '", "description":"' . $description . '"}');
-    	else
-    		return json_encode('{"status":"fail", "change":' . $change .', "return item":"' . $itemName . '", "description":"' . $description . '"}');
+    	else{
+            $false_change = array();
+            $change_arr = json_decode($change);
+            foreach($change_arr as $key=>$value){
+                $false_change[Money::COINS[$key]['name']] = $value;
+            }
+    		return json_encode('{"status":"fail", "change":' . json_encode($false_change) .', "return item":"' . $itemName . '", "description":"' . $description . '"}');
+        }
     }
 }
 ?>
