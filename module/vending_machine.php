@@ -24,25 +24,26 @@ class VendingMaching
         	# payment enough or not
             $total_payment_req = $this->total_payment($req);
             if ( $total_payment_req < $price)
-                return $this->response(false, $req->get_request_payment(), 'payment below item price');
+                return $this->response(false, 'no item', $req->get_request_payment(), 'payment below item price');
 
         	# change available or not
         	$change_result = $this->change_available( $req, $price, $change_list );
             if ( $change_result == false )
-                return $this->response(false, $req->get_request_payment(), 'not enough change coins');
+                return $this->response(false, 'no item', $req->get_request_payment(), 'not enough change coins');
 
             # success
+            $payment_arr = json_decode($req->get_request_payment());
             $return_result = array();
             foreach($change_result as $key=>$value){
-            	$change_list->remove_coin($key, $value['used']);
+            	$change_list->set_coin_count($value['key'], $value['count']);
             	$return_result[$value['name']] = $value['used'];
             }
             $item_list->remove_item_one($req_item_id);
-        	return $this->response(true, json_encode($return_result), 'trade successfully finished, pick your item');
+        	return $this->response(true, Items::ITEMS[$req_item_id]['name'], json_encode($return_result), 'trade successfully finished, pick your item');
 
         }
         else
-            return $this->response(false, $req->get_request_payment(), 'no such item now');
+            return $this->response(false, 'no item', $req->get_request_payment(), 'no such item now');
     }
 
     # whether change available for the payment.
@@ -60,7 +61,8 @@ class VendingMaching
     	# loading 
     	foreach (Money::COINS as $key=>$value) {
         	$coins[$key] = [
-        		'name'=>$value['name'],
+                'key' => $key,
+        		'name' => $value['name'],
         		'value' => $value['value'],
         		'count' => $changelist->get_coin_count($key) + $payment_arr[$key],
         		'used' => 0
@@ -72,13 +74,11 @@ class VendingMaching
             $sortedCoins[$key] = $value['value'];
         }
         array_multisort($sortedCoins, SORT_DESC, $coins);
-
-    	echo '<br \> ar3 <br\>' . var_dump($coins);
-    	echo '<br \>';
     	foreach($coins as $key=>$value){
     		while ( $value['count'] > 0 and $rest >= $value['value']){
     			$rest -= $value['value'];
     			$coins[$key]['used'] ++;
+                $coins[$key]['count'] --;
     		}
     		if ($rest == 0)
     			break;
@@ -98,11 +98,11 @@ class VendingMaching
         return $total;
     }
     # json response format
-    protected function response($status, $change, $description){
+    protected function response($status, $itemName, $change, $description){
     	if ($status == true)
-    		return json_encode('{"status":"success", "change":"' . $change .'", "description":"' . $description . '"}');
+    		return json_encode('{"status":"success", "change":' . $change .', "return item":"' . $itemName . '", "description":"' . $description . '"}');
     	else
-    		return json_encode('{"status":"fail", "change":"' . $change .'", "description":"' . $description . '"}');
+    		return json_encode('{"status":"fail", "change":' . $change .', "return item":"' . $itemName . '", "description":"' . $description . '"}');
     }
 }
 ?>
