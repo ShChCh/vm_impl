@@ -35,7 +35,7 @@ function test($change_arr, $payment_arr, $req_item, $item_arr){
 	$test_cr->set_request_item_id($req_item);
 
 	echo '<br /> payment: ' . $test_cr->get_request_payment();
-	echo '<br /> item requested: ' . Items::ITEMS[$test_cr->get_request_item_id()]['name'];
+	echo '<br /> id of item requested: ' . $req_item;
 
 	// item list info
 	$test_il = new ItemListImpl(); 
@@ -67,34 +67,41 @@ echo '<br />===========Test 1 Success==========<br \>';
 $change_arr = [Money::COIN_ONE=>10, Money::COIN_TWO=>10, Money::COIN_FIVE=>10, Money::COIN_TEN=>10];
 $payment_arr = [Money::COIN_ONE=>10, Money::COIN_TWO=>10, Money::COIN_FIVE=>10, Money::COIN_TEN=>10];
 $req_item = Items::ITEM_SPRITE;
-$item_arr = [Items::ITEM_COLA=>10, Items::ITEM_SPRITE=>10, Items::ITEM_MONSTER=>10, Items::ITEM_REDBULL=>10];
+$item_arr = [Items::ITEM_COLA=>2, Items::ITEM_SPRITE=>2, Items::ITEM_MONSTER=>2, Items::ITEM_REDBULL=>2];
 test($change_arr, $payment_arr, $req_item, $item_arr);
 
 echo '<br />===========Test 2 Not Enough Payment==========<br \>';
 $change_arr = [Money::COIN_ONE=>10, Money::COIN_TWO=>10, Money::COIN_FIVE=>10, Money::COIN_TEN=>10];
 $payment_arr = [Money::COIN_ONE=>1, Money::COIN_TWO=>0, Money::COIN_FIVE=>1, Money::COIN_TEN=>0];
 $req_item = Items::ITEM_REDBULL;
-$item_arr = [Items::ITEM_COLA=>10, Items::ITEM_SPRITE=>10, Items::ITEM_MONSTER=>10, Items::ITEM_REDBULL=>10];
+$item_arr = [Items::ITEM_COLA=>4, Items::ITEM_SPRITE=>4, Items::ITEM_MONSTER=>4, Items::ITEM_REDBULL=>4];
 test($change_arr, $payment_arr, $req_item, $item_arr);
 
 echo '<br />===========Test 3 Not Enough Change==========<br \>';
 $change_arr = [Money::COIN_ONE=>0, Money::COIN_TWO=>10, Money::COIN_FIVE=>10, Money::COIN_TEN=>10];
 $payment_arr = [Money::COIN_ONE=>0, Money::COIN_TWO=>0, Money::COIN_FIVE=>0, Money::COIN_TEN=>1];
 $req_item = Items::ITEM_REDBULL;
-$item_arr = [Items::ITEM_COLA=>10, Items::ITEM_SPRITE=>10, Items::ITEM_MONSTER=>10, Items::ITEM_REDBULL=>10];
+$item_arr = [Items::ITEM_COLA=>6, Items::ITEM_SPRITE=>6, Items::ITEM_MONSTER=>6, Items::ITEM_REDBULL=>6];
 test($change_arr, $payment_arr, $req_item, $item_arr);
 
 echo '<br />===========Test 4 Not Enough Items==========<br \>';
 $change_arr = [Money::COIN_ONE=>10, Money::COIN_TWO=>10, Money::COIN_FIVE=>10, Money::COIN_TEN=>10];
 $payment_arr = [Money::COIN_ONE=>5, Money::COIN_TWO=>5, Money::COIN_FIVE=>5, Money::COIN_TEN=>5];
 $req_item = Items::ITEM_REDBULL;
-$item_arr = [Items::ITEM_COLA=>10, Items::ITEM_SPRITE=>10, Items::ITEM_MONSTER=>10, Items::ITEM_REDBULL=>0];
+$item_arr = [Items::ITEM_COLA=>8, Items::ITEM_SPRITE=>8, Items::ITEM_MONSTER=>8, Items::ITEM_REDBULL=>0];
 test($change_arr, $payment_arr, $req_item, $item_arr);
 
 echo '<br />===========Test 5 Weired Item Name==========<br \>';
 $change_arr = [Money::COIN_ONE=>10, Money::COIN_TWO=>10, Money::COIN_FIVE=>10, Money::COIN_TEN=>10];
 $payment_arr = [Money::COIN_ONE=>5, Money::COIN_TWO=>5, Money::COIN_FIVE=>5, Money::COIN_TEN=>5];
 $req_item = 'water';
-$item_arr = [Items::ITEM_COLA=>10, Items::ITEM_SPRITE=>10, Items::ITEM_MONSTER=>10, Items::ITEM_REDBULL=>0];
+$item_arr = [Items::ITEM_COLA=>5, Items::ITEM_SPRITE=>5, Items::ITEM_MONSTER=>5, Items::ITEM_REDBULL=>5];
+test($change_arr, $payment_arr, $req_item, $item_arr);
+
+echo '<br />===========Test 6 Weired Coin Name in Payment==========<br \>';
+$change_arr = [Money::COIN_ONE=>10, Money::COIN_TWO=>10, Money::COIN_FIVE=>10, Money::COIN_TEN=>10];
+$payment_arr = ['test_money'=>5, Money::COIN_TWO=>5, Money::COIN_FIVE=>5, Money::COIN_TEN=>5];
+$req_item = Items::ITEM_REDBULL;
+$item_arr = [Items::ITEM_COLA=>5, Items::ITEM_SPRITE=>5, Items::ITEM_MONSTER=>5, Items::ITEM_REDBULL=>5];
 test($change_arr, $payment_arr, $req_item, $item_arr);
 ?>

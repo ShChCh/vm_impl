@@ -7,10 +7,10 @@ class Items
     # add as following format
     # only the index should be unique
     # no need for sorted order
-	const ITEM_COLA = '0';
-	const ITEM_SPRITE = '1';
-	const ITEM_MONSTER = '2';
-	const ITEM_REDBULL = '3';
+	const ITEM_COLA = 'CC';
+	const ITEM_SPRITE = 'SP';
+	const ITEM_MONSTER = 'MS';
+	const ITEM_REDBULL = 'RB';
     const ITEMS = [
     	Items::ITEM_COLA => ['name' => 'coca cola', 'price' => 3],
     	Items::ITEM_SPRITE => ['name' => 'sprite', 'price' => 4],
