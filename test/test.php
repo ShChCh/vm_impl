@@ -23,11 +23,11 @@ echo '<br /> 15 : ' . $test_cl->get_coin_count(15);
 echo '<br /> 10 : ' . $test_cl->get_coin_count(Money::COIN_TEN);
 echo '<br /> 5 : ' . $test_cl->get_coin_count(Money::COIN_FIVE);
 echo '<br /> 2 : ' . $test_cl->get_coin_count(Money::COIN_TWO);
-echo '<br /> 1 : ' . $test_cl->get_coin_count(Money::COIN_ONE);
+echo '<br /> 1 : ' . $test_cl->set_coin_count(Money::COIN_ONE, 0);
 
 echo '<br /><br />request info : <br\>';
 $test_cr = new CustomerRequestImpl();
-$test_cr->set_request_payment(7);
+$test_cr->set_request_payment([Money::COIN_ONE=>10, Money::COIN_TWO=>10, Money::COIN_FIVE=>10, Money::COIN_TEN=>10]);
 $test_cr->set_request_item_id(Items::ITEM_SPRITE);
 
 echo '<br /> payment: ' . $test_cr->get_request_payment();
