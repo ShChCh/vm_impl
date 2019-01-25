@@ -206,7 +206,7 @@ class VendingMaching
                 foreach(Money::COINS as $key=>$value){
                     if(strcmp($key, $pay_key) == 0){
                         $extra_money_flag = 1;
-                        $false_change[Money::COINS[$key]['name']] = $value;
+                        $false_change[Money::COINS[$key]['name']] = $value['value'];
                         break;
                     }
                 }
