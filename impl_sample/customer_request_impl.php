@@ -16,8 +16,11 @@ class CustomerRequestImpl implements CustomerRequest
 	public function get_request_payment(){
 		return $this->req_payment;
 	}
-	public function set_request_payment($count){
-		$this->req_payment = $count;
+	public function set_request_payment($dolloarArray){
+		$payment_arr = array();
+		foreach($dolloarArray as $key=>$value)
+			$payment_arr[$key] = $value;
+		$this->req_payment = json_encode($payment_arr);
 	}
 	public function get_request_item_id(){
 		return $this->req_item_id;

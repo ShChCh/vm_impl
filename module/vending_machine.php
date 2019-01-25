@@ -22,11 +22,12 @@ class VendingMaching
         if ( $item_list->is_item_available( $req_item_id ) ){
         	$price = Items::ITEMS[$req_item_id]['price'];
         	# payment enough or not
-            if ( $req->get_request_payment() < $price)
+            $total_payment_req = $this->total_payment($req);
+            if ( $total_payment_req < $price)
                 return $this->response(false, $req->get_request_payment(), 'payment below item price');
 
         	# change available or not
-        	$change_result = $this->change_available( $req->get_request_payment(), $price, $change_list );
+        	$change_result = $this->change_available( $req, $price, $change_list );
             if ( $change_result == false )
                 return $this->response(false, $req->get_request_payment(), 'not enough change coins');
 
@@ -51,16 +52,17 @@ class VendingMaching
 
     # @return : false
     # @return : change list array
-    public function change_available($payment, $price, ChangeList $changelist){
-    	$rest = $payment - $price;
+    public function change_available(CustomerRequest $req, $price, ChangeList $changelist){
+    	$rest = $this->total_payment($req)- $price;
     	$coins = array();
     	$sortedCoins = array();
+        $payment_arr = json_decode($req->get_request_payment());
     	# loading 
     	foreach (Money::COINS as $key=>$value) {
         	$coins[$key] = [
         		'name'=>$value['name'],
         		'value' => $value['value'],
-        		'count' => $changelist->get_coin_count($key),
+        		'count' => $changelist->get_coin_count($key) + $payment_arr[$key],
         		'used' => 0
         	];
     	}
@@ -88,11 +90,13 @@ class VendingMaching
     		return false;
     }
 
-    public function makechange($change_array, ChangeList $change_list){
-
-
+    public function total_payment(CustomerRequest $req){
+        $payment = json_decode($req->get_request_payment());
+        $total = 0;
+        foreach($payment as $key=>$value)
+            $total += $value * Money::COINS[$key]['value'];
+        return $total;
     }
-
     # json response format
     protected function response($status, $change, $description){
     	if ($status == true)
