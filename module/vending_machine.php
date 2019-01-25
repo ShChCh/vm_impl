@@ -118,7 +118,6 @@ class VendingMaching
         $payment_arr = json_decode($req->get_request_payment(), true);
     	# loading all data from payment and coin list 
     	foreach (Money::COINS as $key=>$value) {
-            echo '<br />' . $key . '<br />';
         	$coins[$key] = [
                 'key' => $key,
         		'name' => $value['name'],
