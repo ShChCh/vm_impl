@@ -3,21 +3,21 @@
 ## Folder structure:
 
 
-> .
->> conf
->>> items.php 
->>> money.php
->> impl_sample
->>> change_list_impl.php	
->>> customer_request_impl.php
->>> item_list_impl.php
->> module
->>> change_list.php
->>> customer_request.php
->>> item_list.php
->>> vending_machine.php
->> test
->>> test.php
+* ./
+  * conf
+    * items.php 
+    * money.php
+  * impl_sample
+    * change_list_impl.php	
+    * customer_request_impl.php
+    * item_list_impl.php
+  * module
+    * change_list.php
+    * customer_request.php
+    * item_list.php
+    * vending_machine.php
+  * test
+    * test.php
 
 
 ## Folder Info:
