@@ -118,7 +118,6 @@ class VendingMaching
         $payment_arr = json_decode($req->get_request_payment(), true);
     	# loading all data from payment and coin list 
     	foreach (Money::COINS as $key=>$value) {
-            echo '<br />' . $key . '<br />';
         	$coins[$key] = [
                 'key' => $key,
         		'name' => $value['name'],
@@ -207,7 +206,7 @@ class VendingMaching
                 foreach(Money::COINS as $key=>$value){
                     if(strcmp($key, $pay_key) == 0){
                         $extra_money_flag = 1;
-                        $false_change[Money::COINS[$key]['name']] = $value;
+                        $false_change[Money::COINS[$key]['name']] = $value['value'];
                         break;
                     }
                 }
